@@ -5,21 +5,21 @@ const path = require("path");
 
 module.exports = {
   config: {
-    name: "hug",
-    aliases: ["hug"],
+    name: "propose",
+    aliases: ["propose"],
     version: "1.0",
     author: "T A N J I L ",
     countDown: 5,
     role: 0,
-    shortDescription: "Hug with custom image",
-    longDescription: "Generate a hug image with the mentioned user using a custom background.",
+    shortDescription: "Propose with custom image",
+    longDescription: "Generate a propose image with the mentioned user using a custom background.",
     category: "funny",
     guide: "{pn} @mention"
   },
 
   onStart: async function ({ api, message, event, usersData }) {
     const mention = Object.keys(event.mentions);
-    if (mention.length === 0) return message.reply("Please mention someone to hug.");
+    if (mention.length === 0) return message.reply("Please mention someone to propose.");
 
     let senderID = event.senderID;
     let mentionedID = mention[0];
@@ -36,7 +36,7 @@ module.exports = {
       ]);
 
       // Load and scale background
-      const bgUrl = "http://remakeai-production.up.railway.app/Remake_Ai/Nyx_Remake_1746746979872.jpg";
+      const bgUrl = "http://remakeai-production.up.railway.app/Remake_Ai/Nyx_Remake_1746746522031.jpg";
       const bgRes = await axios.get(bgUrl, { responseType: "arraybuffer" });
       const bg = await Canvas.loadImage(bgRes.data);
 
@@ -73,18 +73,18 @@ module.exports = {
       ctx.restore();
 
       // Save and send image
-      const imgPath = path.join(__dirname, "tmp", `${senderID}_${mentionedID}_hug.png`);
+      const imgPath = path.join(__dirname, "tmp", `${senderID}_${mentionedID}_propose.png`);
       await fs.ensureDir(path.dirname(imgPath));
       fs.writeFileSync(imgPath, canvas.toBuffer("image/png"));
 
       message.reply({
-        body: "Hugggg!",
+        body: "Will you marry me?",
         attachment: fs.createReadStream(imgPath)
       }, () => fs.unlinkSync(imgPath));
 
     } catch (err) {
-      console.error("Error in hug command:", err);
-      message.reply("There was an error creating the hug image.");
+      console.error("Error in propose command:", err);
+      message.reply("There was an error creating the propose image.");
     }
   }
 };
