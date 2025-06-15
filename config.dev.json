@@ -13,7 +13,7 @@
   "checkApproval": true,
   "language": "en",
   "notesLanguage": "change to your language with ISO 639-1 code, available languages: vi (Vietnamese), en (English)",
-  "nickNameBot": "EREN",
+  "nickNameBot": "〲٭⃝✨⃝YOUR 卝 চুন্নি ⃝✨⃝٭",
   "prefix": "/",
   "adminOnly": {
     "enable": false,
@@ -21,7 +21,7 @@
   },
   "adminBot": [
   
-    "61574046213712",
+    "61577095705293",
     "",
     "",
     "",
@@ -30,7 +30,7 @@
   ],
   "whiteListMode": {
     "enable": false,
-    "whiteListIds": ["61574046213712",
+    "whiteListIds": ["61577095705293",
 "",
       ""
     ],
