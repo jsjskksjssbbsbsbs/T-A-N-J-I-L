@@ -1,66 +1,51 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+const { getStreamFromURL } = require("fb-watchman");
 
 module.exports = {
-config: {
-  name: "owner",
-  aurthor:"Tokodori",// Convert By Goatbot Tokodori 
-   role: 0,
-  shortDescription: " ",
-  longDescription: "",
-  category: "admin",
-  guide: "{pn}"
-},
+  config: {
+    name: "owner",
+    version: 2.0,
+    author: "〲 T A N J I L ツ",
+    longDescription: "info about bot and owner",
+    category: "Special",
+    guide: {
+      en: "{p}{n}",
+    },
+  },
 
-  onStart: async function ({ api, event }) {
-  try {
-    const ownerInfo = {
-      name: 'Eren',
-      gender: '𝐌𝐚𝐥𝐞',
-      age: '16±',
-      height: '5.11',
-      choise: 'Russian 😞',
-      nick: '𝐉𝐚𝐦𝐚𝐢  '
-    };
+  onStart: async function ({ api, event, args, message, usersData }) {
+    const imgURL = "https://files.catbox.moe/32ffse.jpg";
+    const attachment = await global.utils.getStreamFromURL(imgURL);
 
-    const bold = 'https://files.catbox.moe/dpgl9a.jpg'; // Replace with your Google Drive videoid link https://drive.google.com/uc?export=download&id=here put your video id
+    const id = event.senderID;
+    const userData = await usersData.get(id);
+    const name = userData.name;
 
-    const tmpFolderPath = path.join(__dirname, 'tmp');
+    const ment = [{ id: id, tag: name }];
+    
+    const a = "-`ღ´ᵞᴼᵁᴿ 🌷𝐁𝐁'𝐗᯽";
+    const b = "."; // Prefix
+    const c = "〲 T A N J I L ツ";
+    const e = "Male";
+    const f = "𝟏𝟖 ±";
+    const g = "𝐒𝐢𝐧𝐠𝐥𝐞";
+    const h = "𝐈𝐧𝐭𝐞𝐫 𝟐";
+    const i = "𝐃𝐡𝐚𝐤𝐚";
+    const d = "N/A";
 
-    if (!fs.existsSync(tmpFolderPath)) {
-      fs.mkdirSync(tmpFolderPath);
-    }
+    message.reply({ 
+      body: `᯽ ${name} ᯽
 
-    const videoResponse = await axios.get(bold, { responseType: 'arraybuffer' });
-    const videoPath = path.join(tmpFolderPath, 'owner_video.mp4');
-
-    fs.writeFileSync(videoPath, Buffer.from(videoResponse.data, 'binary'));
-
-    const response = ` 
-╭[ .  ]•〆 ᵀᴬᴺᴶᴵᴸ 〆 ]  ─⦿
-╭────────────◊
-├‣ 𝐁𝐨𝐭 & 𝐎𝐰𝐧𝐞𝐫 𝐈𝐧𝐟𝐨𝐫𝐦𝐚𝐭𝐢𝐨𝐧 
-├‣ 𝐍𝐚𝐦𝐞: ${ownerInfo.name}
-├‣ 𝐆𝐞𝐧𝐝𝐞𝐫:  ${ownerInfo.gender}
-├‣ 𝐀𝐠𝐞 .${ownerInfo.age}
-├‣ 𝐍𝐢𝐜𝐤 : ${ownerInfo.nick}
-├‣ 𝐂𝐡𝐨𝐢𝐬𝐞:  ${ownerInfo.choise}   
-├‣ 𝐇𝐞𝐢𝐠𝐡𝐭 : ${ownerInfo.height}
-╰────────────◊ 
-`;
-
-    await api.sendMessage({
-      body: response,
-      attachment: fs.createReadStream(videoPath)
-    }, event.threadID, event.messageID);
-
-    if (event.body.toLowerCase().includes('ownerinfo')) {
-      api.setMessageReaction('🚀', event.messageID, (err) => {}, true);
-    }
-  } catch (error) {
-    console.error('Error in ownerinfo command:', error);
-    return api.sendMessage('An error occurred while processing the command.', event.threadID);
-  }
-},
+᯽Bot's Name: ${a}
+᯽ Bot's prefix: ${b}  
+᯽Owner: ${c}
+᯽ Gender: ${e}
+᯽ Owners Messenger: ${d}
+᯽ Age: ${f}
+᯽ Relationship: ${g}
+᯽Class: ${h}
+᯽ Basa: ${i}`,
+      mentions: ment,
+      attachment: attachment
+    });
+  }
 };
