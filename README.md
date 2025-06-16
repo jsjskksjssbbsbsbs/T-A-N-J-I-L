@@ -1,55 +1,36 @@
-<h1 align="center">MaHi's Bot </h1>
+# 👋 Hello, I'm Tanjil Hasan!
 
-<p align="center">
-  <a href="https://files.catbox.moe/2qwm2r.mp4">
-    <img src="https://i.imgur.com/MPrrh0Y.jpeg" alt="Watch demo video" width="400"/>
-  </a>
-</p>
+![Banner](https://files.catbox.moe/egw7cj.jpg)
+
+I'm a curious and tech-enthusiastic individual, currently focused on learning new skills every day. I dream of making it big someday and becoming someone truly valuable in life.
 
 ---
 
-## 👤 OWNER INFO
+## 🧑‍💻 About Me
 
-- 👑 Name: **MaHi**
-- 🏙️ From: **Dhaka**
-- 🎂 Age: **16**
-
----
-
-## ⚙️ HOW TO RUN ON RENDER
-
-### 🥇 1st Step
-Rename these files:
-- `account.txt` → **`account.dev.txt`**
-- `config.json` → **`config.dev.json`**
-- `configcommands.json` → **`configcommand.dev.json`**
+- 🔭 Currently exploring new knowledge and skills
+- 🌱 Not in school right now, but working hard for a better future
+- 🎮 Passionate about: Religion, Gaming (Free Fire), Music
+- 📍 Location: Dhaka, Mirpur 12, D Block, Muslim Bazaar-
 
 ---
 
-### 🥈 2nd Step
-- Go to [Render.com](https://render.com) and **sign up**
-- Tap the **left sidebar icon** and choose `Web Service`
-- Connect with GitHub and select your bot repo
-- On setup:
-  - Set **Runtime** to `Node`
-  - Replace **Dockerfile** with `Node`
-- Choose plan ➜ scroll down ➜ click **Deploy Web Service**
-- After deploying, **copy your domain link**
+
+## 📫 Connect With Me
+
+- 🧵 Facebook: [〲TOM 卝 হাসানヅ࿐](https://www.facebook.com/share/12Ke3rerJgs/)
+- 📱 WhatsApp: +8801XXXXXXXXX
 
 ---
 
-### 🥉 3rd Step
-Go to [UptimeRobot.com](https://uptimerobot.com) and sign up
+## 📂 GitHub Stats
 
-- Tap ➕ `Create Monitor`
-- Choose `HTTPS`
-- Paste your domain link
-- Click `Create Monitor`
+![Tanjil's GitHub stats](https://github-readme-stats.vercel.app/api?username=your-github-username&show_icons=true&theme=radical)
 
 ---
 
-## 🎉 DONE! YOUR BOT IS NOW LIVE 24/7!
+## 💖 Thanks for Visiting!
 
----
-
-> 🤖 **Need help?** Contact MaHi or open an issue in the repo.
+Thank you for taking the time to check out my profile!  
+Feel free to reach out if you'd like to connect or collaborate.  
+Stay safe, stay awesome! 😊
