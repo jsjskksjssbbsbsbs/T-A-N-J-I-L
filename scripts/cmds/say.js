@@ -1,51 +1,52 @@
-const fs = require("fs");
 const axios = require("axios");
-const googleTTS = require("google-tts-api");
+
+const baseApiUrl = async () => {
+  const base = await axios.get("https://raw.githubusercontent.com/mahmudx7/exe/main/baseApiUrl.json");
+  return base.data.mahmud
+};
 
 module.exports = {
   config: {
     name: "say",
-    aliases: ["speak", "kotha"],
-    version: "1.1",
-    author: "✨ Eren Yeh ✨",
+    version: "1.7",
+    author: "MahMUD",
     countDown: 5,
     role: 0,
-    shortDescription: {
-      en: "Convert text to Bangla voice"
-    },
-    longDescription: {
-      en: "Bot will speak your text in Bangla using Google TTS"
-    },
     category: "media",
-    guide: {
-      en: "{pn} <your bangla text>"
-    }
+    guide: "{pn} <text> (or reply to a message)",
   },
 
-  onStart: async function ({ args, message }) {
-    const text = args.join(" ");
-    if (!text) return message.reply("দয়া করে একটি বার্তা লিখুন!");
+  onStart: async function ({ api, message, args, event }) {
+    let text = args.join(" ");
+
+    if (event.type === "message_reply" && event.messageReply.body) {
+      text = event.messageReply.body;
+    }
+
+    if (!text) {
+      return message.reply("⚠️ দয়া করে কিছু লিখুন বা একটি মেসেজে রিপ্লাই দিন!");
+    }
 
     try {
-      const url = googleTTS.getAudioUrl(text, {
-        lang: 'bn',
-        slow: false,
-        host: 'https://translate.google.com'
+      const baseUrl = await baseApiUrl();
+      const response = await axios.get(`${baseUrl}/api/say`, {
+        params: { text },
+        headers: { "Author": module.exports.config.author },
+        responseType: "stream",
       });
 
-      const path = `${__dirname}/voice.mp3`;
-      const res = await axios.get(url, { responseType: 'arraybuffer' });
-      fs.writeFileSync(path, Buffer.from(res.data, "utf-8"));
+      if (response.data.error) {
+        return message.reply(`❌ Error: ${response.data.error}`);
+      }
 
-      await message.reply({
-        body: `🔈 বললাম: ${text}`,
-        attachment: fs.createReadStream(path)
+      message.reply({
+        body: "",
+        attachment: response.data,
       });
 
-      fs.unlinkSync(path);
-    } catch (err) {
-      console.error(err);
-      message.reply("❌ ভয়েস বানাতে সমস্যা হয়েছে!");
+    } catch (e) {
+      console.error("API Error:", e.response ? e.response.data : e.message);
+      message.reply("🐥 দুঃখিত, কিছু একটা সমস্যা হয়েছে!\n\nfix Author name\n" + (e.response?.data?.error || e.message));
     }
-  }
+  },
 };
