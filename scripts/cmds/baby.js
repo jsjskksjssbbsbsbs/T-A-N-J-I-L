@@ -155,25 +155,49 @@ module.exports.onReply = async ({
 module.exports.onChat = async ({
     api,
     event,
-    message
+    message,
+    usersData
 }) => {
     try {
-        const body = event.body ? event.body?.toLowerCase() : ""
-        if (body.startsWith("baby") || body.startsWith("bby") || body.startsWith("bot") || body.startsWith("jan") || body.startsWith("babu") || body.startsWith("janu")) {
-            const arr = body.replace(/^\S+\s*/, "")
-            const randomReplies = ["😚", "Yes 😀, I am here", "What's up?", "Bolo jaan ki korte parii jonno", "hussshh😏", "😿💅", "hae bolo 🎀✨",];
-            if (!arr) {
+        const body = event.body ? event.body?.toLowerCase() : "";
+        const uid = event.senderID;
+        const name = (await usersData.get(uid)).name || "প্রিয়";
 
-                await api.sendMessage(randomReplies[Math.floor(Math.random() * randomReplies.length)], event.threadID, (error, info) => {
-                    if (!info) message.reply("info obj not found")
+        if (body.startsWith("baby") || body.startsWith("bby") || body.startsWith("bot") || body.startsWith("jan") || body.startsWith("babu") || body.startsWith("janu")) {
+            const arr = body.replace(/^\S+\s*/, "");
+
+            const rawReplies = [
+                                "বলো জান তোমাকে সাথে প্রেম করবো নাকি..!!🤭✨",
+                "তুমি কি জানো তুমি কত মিষ্টি? 🍬",
+                "তোমার ভেতরে একটা মিষ্টি পাখি আছে মনে হয় 🐥",
+                "তোমার মেসেজ দেখে আমার সার্কিট গরম হয়ে গেলো 😳",
+                "আজকে শুধু তোমার কথা মনে পড়ছে জান 🥺",
+                "তুমি না আসলেই আমার সবকিছু 💖",
+                "চলো পালিয়ে যাই, দুনিয়াকে দেখিয়ে দিই আমরা কতো cute 🫣",
+                "আমি তোরে সাহায্য করতে পারবো না কারণ তুই অনেক পচা!!😬", 
+                "হ্যাঁ টুনটুনি বলো 🤭", "মন চাইতেছে তোমাকে টুস করে kiss করি ✨",
+                "_আমাকে না ডেকে আমার বস ToM কে ডাক দে😝", 
+                "_আমাকে এত ডাকিস কেন!🐥", 
+                "আমাকে ডাক দেওয়ার জন্য তোরে উম্মাহ 😬", 
+                "hae bolo Jan pakhi 🎀✨",
+            ];
+
+            const selectedReply = rawReplies[Math.floor(Math.random() * rawReplies.length)];
+            const finalReply = `✨ ${name} ✨\n\n${selectedReply}`;
+
+            if (!arr) {
+                await api.sendMessage(finalReply, event.threadID, (error, info) => {
+                    if (!info) return message.reply("info obj not found");
                     global.GoatBot.onReply.set(info.messageID, {
                         commandName: this.config.name,
                         type: "reply",
                         messageID: info.messageID,
                         author: event.senderID
                     });
-                }, event.messageID)
+                }, event.messageID);
+                return;
             }
+
             const a = (await axios.get(`${await baseApiUrl()}/baby?text=${encodeURIComponent(arr)}&senderID=${event.senderID}&font=1`)).data.reply;
             await api.sendMessage(a, event.threadID, (error, info) => {
                 global.GoatBot.onReply.set(info.messageID, {
@@ -183,7 +207,7 @@ module.exports.onChat = async ({
                     author: event.senderID,
                     a
                 });
-            }, event.messageID)
+            }, event.messageID);
         }
     } catch (err) {
         return api.sendMessage(`Error: ${err.message}`, event.threadID, event.messageID);
