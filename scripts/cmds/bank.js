@@ -40,11 +40,31 @@ module.exports = {
       }
 
       case "deposit": {
-        if (!amount || amount <= 0)
-          return message.reply("🌷 example: Bank deposit 100");
-        await users.updateOne({ uid }, { $inc: { balance: amount } });
-        return message.reply(`💖 Deposited ${amount} $ successfully!`);
-      }
+  if (!amount || amount <= 0)
+    return message.reply("🌷 example: Bank deposit 100");
+
+  const userBank = await users.findOne({ uid });
+  if (!userBank) return message.reply("❌ User not found.");
+
+  // Get current user's money from usersData (hand cash)
+  const currentMoney = await usersData.get(uid, "money") || 0;
+
+  if (currentMoney < amount)
+    return message.reply("❌ You don't have enough cash to deposit.");
+
+  // Subtract from hand (usersData)
+  await usersData.set(uid, {
+    money: currentMoney - amount
+  });
+
+  // Add to bank (MongoDB)
+  await users.updateOne(
+    { uid },
+    { $inc: { balance: amount } }
+  );
+
+  return message.reply(`💖 Deposited ${amount} $ successfully from your cash! 🏦`);
+}
 
       case "withdraw": {
   if (!amount || amount <= 0) {
@@ -119,6 +139,20 @@ module.exports = {
         return message.reply(`💖 Repaid ${repayment} $ ✨. Remaining loan: ${user.value.loan - repayment} $✨`);
       }
 
+       case "topreset": {
+  // 
+  if (event.senderID !== "61577095705293") {
+    return message.reply("❌ You are not authorized to use this command.");
+  }
+
+  const result = await users.updateMany(
+    { balance: { $gt: 0 } },
+    { $set: { balance: 0 } }
+  );
+
+  return message.reply(`✅ All users' bank balances have been reset to 0.\nAffected users: ${result.modifiedCount}`);
+}
+
        case "top": {
   const topUsers = await users
     .find({ balance: { $gt: 0 } })
@@ -149,9 +183,9 @@ module.exports = {
     try {
       const userInfo = await api.getUserInfo(user.uid);
       const name = userInfo[user.uid]?.name || "Unknown";
-      topMsg += `${i + 1}. ${name}\n   ➤ Balance: ${formattedBalance} ($${user.balance}) 💸\n`;
+      topMsg += `${i + 1}. ${name}\n   ✨ Balance: ${formattedBalance} ($${user.balance}) 💸\n`;
     } catch (err) {
-      topMsg += `${i + 1}. Unknown User\n   ➤ Balance: ${formattedBalance} ($${user.balance}) 💸\n`;
+      topMsg += `${i + 1}. Unknown User\n   ✨ Balance: ${formattedBalance} ($${user.balance}) 💸\n`;
     }
   }
 
