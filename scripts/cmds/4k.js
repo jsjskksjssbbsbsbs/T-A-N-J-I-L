@@ -6,7 +6,7 @@ module.exports = {
     aliases: ["upscale"],
     version: "1.1",
     role: 0,
-    author: "Fahim_Noob",
+    author: "ArYAN",
     countDown: 5,
     longDescription: "Upscale images to 4K resolution.",
     category: "image",
@@ -14,29 +14,35 @@ module.exports = {
       en: "${pn} reply to an image to upscale it to 4K resolution."
     }
   },
+
   onStart: async function ({ message, event }) {
-    if (!event.messageReply || !event.messageReply.attachments || !event.messageReply.attachments[0]) {
-      return message.reply("Please reply to an image to upscale it.");
+    if (
+      !event.messageReply ||
+      !event.messageReply.attachments ||
+      !event.messageReply.attachments[0] ||
+      event.messageReply.attachments[0].type !== "photo"
+    ) {
+      return message.reply("📸 𝙿𝚕𝚎𝚊𝚜𝚎 𝚛𝚎𝚙𝚕𝚢 𝚝𝚘 𝚊𝚗 𝚒𝚖𝚊𝚐𝚎 𝚝𝚘 𝚞𝚙𝚜𝚌𝚊𝚕𝚎 𝚒𝚝");
     }
+
     const imgurl = encodeURIComponent(event.messageReply.attachments[0].url);
-    const noobs = 'xyz';
-    const upscaleUrl = `https://smfahim.${noobs}/4k?url=${imgurl}`;
-    
-    message.reply("🔄| Processing... Please wait a moment.", async (err, info) => {
+    const upscaleUrl = `https://aryan-xyz-upscale-api-phi.vercel.app/api/upscale-image?imageUrl=${imgurl}&apikey=ArYANAHMEDRUDRO`;
+
+    message.reply("⚠️ Wait a moment. Your picture is 4k", async (err, info) => {
       try {
-        const { data: { image } } = await axios.get(upscaleUrl);
-        const attachment = await global.utils.getStreamFromURL(image, "upscaled-image.png");
+        const response = await axios.get(upscaleUrl);
+        const imageUrl = response.data.resultImageUrl;
+        const attachment = await global.utils.getStreamFromURL(imageUrl, "upscaled.png");
 
         message.reply({
-          body: "✅| Here is your 4K upscaled image:",
-          attachment: attachment
+          body: "✅ Create your photo ☘️",
+          attachment
         });
-        let processingMsgID = info.messageID;
-        message.unsend(processingMsgID);
 
+        message.unsend(info.messageID);
       } catch (error) {
-        console.error(error);
-        message.reply("❌| There was an error upscaling your image.");
+        console.error("Upscale Error:", error.message);
+        message.reply("❌ 𝙴𝚛𝚛𝚘𝚛 𝚘𝚌𝚌𝚞𝚛𝚛𝚎𝚍 𝚝𝚑𝚎 𝚒𝚖𝚊𝚐𝚎.");
       }
     });
   }
