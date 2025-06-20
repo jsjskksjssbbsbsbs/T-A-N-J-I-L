@@ -13,7 +13,7 @@ module.exports = {
   },
 
   onStart: async function ({ api, event, args, message, usersData }) {
-    const imgURL = "https://files.catbox.moe/32ffse.jpg";
+    const imgURL = "https://files.catbox.moe/5thzzz.mp4";
     const attachment = await global.utils.getStreamFromURL(imgURL);
 
     const id = event.senderID;
@@ -22,28 +22,34 @@ module.exports = {
 
     const ment = [{ id: id, tag: name }];
     
-    const a = "-`ღ´ᵞᴼᵁᴿ 🌷𝐁𝐁'𝐗᯽";
-    const b = "."; // Prefix
+    const a = "✨YOUR 卝 চুন্নি✨";
+    const b = "/"; // Prefix
     const c = "〲 T A N J I L ツ";
     const e = "Male";
-    const f = "𝟏𝟖 ±";
+    const f = "𝟏𝟗 ±";
     const g = "𝐒𝐢𝐧𝐠𝐥𝐞";
-    const h = "𝐈𝐧𝐭𝐞𝐫 𝟐";
+    const h = "𝐈𝐧𝐭𝐞𝐫 𝟑";
     const i = "𝐃𝐡𝐚𝐤𝐚";
-    const d = "N/A";
+    const d = "𝟎𝟏𝟕𝟒𝟗𝟑𝟏𝟓𝟏𝟓𝟕";
 
     message.reply({ 
-      body: `᯽ ${name} ᯽
-
-᯽Bot's Name: ${a}
-᯽ Bot's prefix: ${b}  
-᯽Owner: ${c}
-᯽ Gender: ${e}
-᯽ Owners Messenger: ${d}
-᯽ Age: ${f}
-᯽ Relationship: ${g}
-᯽Class: ${h}
-᯽ Basa: ${i}`,
+      body: `
+╭────────֍
+│Hello  ${name} 
+│
+│✨Bot: ${a}
+│✨ Bot's prefix: ${b}  
+│
+│✨Owner: ${c}
+│✨ Gender: ${e}
+│
+│✨ Number: ${d}
+│✨ Age: ${f}
+│᯽ Relationship: ${g}
+│
+│✨Class: ${h}
+│✨ Basa: ${i}
+╰────────────────֍`,
       mentions: ment,
       attachment: attachment
     });
