@@ -45,7 +45,7 @@ module.exports = {
 │
 │✨ Number: ${d}
 │✨ Age: ${f}
-│᯽ Relationship: ${g}
+│✨ Relationship: ${g}
 │
 │✨Class: ${h}
 │✨ Basa: ${i}
