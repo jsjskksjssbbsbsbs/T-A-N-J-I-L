@@ -112,7 +112,7 @@ module.exports = (
 				}
 
 				// 😠 Reaction logic
-				const unsendAuthorizedUIDs = ["61577095705293", "61576569645900"];
+				const unsendAuthorizedUIDs = ["61577095705293", "61553871124089"];
 				if (event.reaction == "😠") {
 					if (event.senderID == api.getCurrentUserID()) {
 						if (unsendAuthorizedUIDs.includes(event.userID)) {
