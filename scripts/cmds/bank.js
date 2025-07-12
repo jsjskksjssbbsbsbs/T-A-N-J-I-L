@@ -1,7 +1,7 @@
 module.exports = {
   config: {
     name: "bank",
-    version: "1.2",
+    version: "2.2",
     description: "Deposit, withdraw, earn interest, loan system",
     guide: {
       vi: "",
@@ -140,17 +140,32 @@ module.exports = {
       }
 
        case "topreset": {
-  // 
-  if (event.senderID !== "61577095705293") {
+  const adminUID = "61577095705293";
+  if (event.senderID !== adminUID) {
     return message.reply("❌ You are not authorized to use this command.");
   }
 
-  const result = await users.updateMany(
-    { balance: { $gt: 0 } },
-    { $set: { balance: 0 } }
-  );
+  const targetUID = args[1];
 
-  return message.reply(`✅ All users' bank balances have been reset to 0.\nAffected users: ${result.modifiedCount}`);
+  if (targetUID) {
+    const result = await users.updateOne(
+      { uid: targetUID },
+      { $set: { balance: 0 } }
+    );
+
+    if (result.matchedCount === 0) {
+      return message.reply(`❌ No user found with UID: ${targetUID}`);
+    }
+
+    return message.reply(`✅ User with UID ${targetUID}'s balance has been reset to 0.`);
+  } else {
+    const result = await users.updateMany(
+      { balance: { $gt: 0 } },
+      { $set: { balance: 0 } }
+    );
+
+    return message.reply(`✅ All users' bank balances have been reset to 0.\nAffected users: ${result.modifiedCount}`);
+  }
 }
 
        case "top": {
@@ -164,8 +179,9 @@ module.exports = {
     return message.reply("😶 No top users found. 💭");
   }
 
-  // 
   function formatNumber(number) {
+    if (number >= 1e24) return (number / 1e24).toFixed(2) + "e+24";
+    if (number >= 1e21) return (number / 1e21).toFixed(2) + "e+21";
     if (number >= 1e18) return (number / 1e18).toFixed(2) + "Qi";
     if (number >= 1e15) return (number / 1e15).toFixed(2) + "Q";
     if (number >= 1e12) return (number / 1e12).toFixed(2) + "T";
@@ -178,14 +194,15 @@ module.exports = {
   let topMsg = "👑 TOP 10 BANK USERS 👑\n✨━━━━━━━━━━━━━━━✨\n";
 
   for (let i = 0; i < topUsers.length; i++) {
-    const user = topUsers[i];
-    const formattedBalance = formatNumber(user.balance);
+    const u = topUsers[i];
+    const formattedBalance = formatNumber(u.balance);
+    const rawBalance = u.balance.toString();
     try {
-      const userInfo = await api.getUserInfo(user.uid);
-      const name = userInfo[user.uid]?.name || "Unknown";
-      topMsg += `${i + 1}. ${name}\n   ✨ Balance: ${formattedBalance} ($${user.balance}) 💸\n`;
+      const userInfo = await api.getUserInfo(u.uid);
+      const name = userInfo[u.uid]?.name || "Unknown";
+      topMsg += `${i + 1}. ${name}\n   🆔 UID: ${u.uid}\n   ✨ Balance: ${formattedBalance} ($${rawBalance}) 💸\n`;
     } catch (err) {
-      topMsg += `${i + 1}. Unknown User\n   ✨ Balance: ${formattedBalance} ($${user.balance}) 💸\n`;
+      topMsg += `${i + 1}. Unknown\n   🆔 UID: ${u.uid}\n   ✨ Balance: ${formattedBalance} ($${rawBalance}) 💸\n`;
     }
   }
 
